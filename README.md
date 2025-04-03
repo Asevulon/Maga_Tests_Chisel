@@ -2,7 +2,7 @@
 
 ## Preferences
 
-Follow the chisel installation guide [text](https://www.chisel-lang.org/docs/installation).
+Follow the chisel [installation guide](https://www.chisel-lang.org/docs/installation).
 
 ## Run
 
