@@ -1,18 +1,18 @@
-#General
+# General
 
-##Preferences
+## Preferences
 
 Follow the chisel installation guide [text](https://www.chisel-lang.org/docs/installation).
 
-##Run
+## Run
 
-###Create Verilog
+### Create Verilog
 
 '''
 mill run
 '''
 
-###Run tests
+### Run tests
 
 '''
 mill test
