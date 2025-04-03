@@ -14,6 +14,4 @@ mill run
 
 ### Run tests
 
-'''
-mill test
-'''
+'''mill test '''
