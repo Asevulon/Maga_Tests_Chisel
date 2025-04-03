@@ -8,10 +8,12 @@ Follow the chisel installation guide [text](https://www.chisel-lang.org/docs/ins
 
 ### Create Verilog
 
-'''
+```
 mill run
-'''
+```
 
 ### Run tests
 
-'''mill test '''
+```
+mill test
+```
