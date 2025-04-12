@@ -17,6 +17,7 @@ class Test extends AnyFlatSpec with ChiselScalatestTester {
       au.io.valid.poke(false)
       au.io.out.expect(3)
       au.io.ready.expect(true)
+      au.io.overflow.expect(false)
 
       au.clock.step()
     }
@@ -34,6 +35,7 @@ class Test extends AnyFlatSpec with ChiselScalatestTester {
       au.io.valid.poke(false)
       au.io.out.expect(6)
       au.io.ready.expect(true)
+      au.io.overflow.expect(false)
 
       au.clock.step()
     }
@@ -51,6 +53,7 @@ class Test extends AnyFlatSpec with ChiselScalatestTester {
       au.io.valid.poke(false)
       au.io.out.expect(-1)
       au.io.ready.expect(true)
+      au.io.overflow.expect(false)
 
       au.clock.step()
     }
@@ -68,6 +71,95 @@ class Test extends AnyFlatSpec with ChiselScalatestTester {
       au.io.valid.poke(false)
       au.io.out.expect(5)
       au.io.ready.expect(true)
+      au.io.overflow.expect(false)
+
+      au.clock.step()
+    }
+  }
+}
+
+class TestOverflow extends AnyFlatSpec with ChiselScalatestTester {
+
+  "Arithmetic Unit" should "Overflow on 7+7" in {
+    implicit val p = AUParams(width = 4)
+    test(new ArithmeticUnit()) { au =>
+      au.io.valid.poke(true)
+      au.io.cmd.poke(CmdList.Addition)
+      au.io.op1.poke(7)
+      au.io.op2.poke(7)
+      au.clock.step()
+
+      au.io.valid.poke(false)
+      au.io.ready.expect(true)
+      au.io.overflow.expect(true)
+
+      au.clock.step()
+    }
+  }
+
+  it should "Overflow on -8 -1" in {
+    implicit val p = AUParams(width = 4)
+    test(new ArithmeticUnit()) { au =>
+      au.io.valid.poke(true)
+      au.io.cmd.poke(CmdList.Subtraction)
+      au.io.op1.poke(-8)
+      au.io.op2.poke(1)
+      au.clock.step()
+
+      au.io.valid.poke(false)
+      au.io.ready.expect(true)
+      au.io.overflow.expect(true)
+
+      au.clock.step()
+    }
+  }
+
+  it should "Overflow on 3 * 5" in {
+    implicit val p = AUParams(width = 4)
+    test(new ArithmeticUnit()) { au =>
+      au.io.valid.poke(true)
+      au.io.cmd.poke(CmdList.Multiplication)
+      au.io.op1.poke(3)
+      au.io.op2.poke(5)
+      au.clock.step()
+
+      au.io.valid.poke(false)
+      au.io.ready.expect(true)
+      au.io.overflow.expect(true)
+
+      au.clock.step()
+    }
+  }
+
+  it should "Overflow on 1 / 0" in {
+    implicit val p = AUParams(width = 4)
+    test(new ArithmeticUnit()) { au =>
+      au.io.valid.poke(true)
+      au.io.cmd.poke(CmdList.Division)
+      au.io.op1.poke(1)
+      au.io.op2.poke(0)
+      au.clock.step()
+
+      au.io.valid.poke(false)
+      au.io.ready.expect(true)
+      au.io.overflow.expect(true)
+
+      au.clock.step()
+    }
+  }
+
+  it should "Overflow on -8 / -1" in {
+    implicit val p = AUParams(width = 4)
+    test(new ArithmeticUnit()) { au =>
+      au.io.valid.poke(true)
+      au.io.cmd.poke(CmdList.Division)
+      au.io.op1.poke(-8)
+      au.io.op2.poke(-1)
+      au.clock.step()
+
+      au.io.valid.poke(false)
+      au.io.ready.expect(true)
+      au.io.overflow.expect(true)
 
       au.clock.step()
     }
