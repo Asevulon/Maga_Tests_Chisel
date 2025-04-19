@@ -82,7 +82,7 @@ abstract class AUSubmodule(implicit p: AUParams) extends Module {
     printf(
       cf" Module:" + this
         .getClass()
-        .getName() + cf"\n  valid: ${io.valid}%d, op1: ${io.op1}%d, op2: ${io.op2}%d, out: ${io.out}%d, ready: ${io.ready}%d, overflow: ${io.overflow}\n"
+        .getName() + cf"\n  valid: ${io.valid}%d, op1: ${io.op1}%d, op2: ${io.op2}%d, out: ${io.out}%d, ready: ${io.ready}%d, overflow: ${io.overflow}, overflowedRes: ${Operation(io.op1, io.op2)}%d\n"
     )
   }
   def ExtendOp(target: SInt, width: Int): SInt = {
@@ -95,7 +95,9 @@ abstract class AUSubmodule(implicit p: AUParams) extends Module {
 
   when(io.valid) {
     val overflowWire = Overflow(io.op1, io.op2)
-    res := Mux(overflowWire, 0.S, Operation(io.op1, io.op2))
+//res := Mux(overflowWire, 0.S, Operation(io.op1, io.op2))
+    val tempres = Operation(io.op1, io.op2)
+    res := tempres(p.width - 1, 0).asSInt
     overflow := overflowWire
   }
 
