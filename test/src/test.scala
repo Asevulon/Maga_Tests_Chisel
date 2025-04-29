@@ -4,20 +4,24 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 import ArithmeticUnit._
 
+//класс с тестами
 class Test extends AnyFlatSpec with ChiselScalatestTester {
+  // объявление теста
   "Arithmetic Unit" should "do 1 + 2" in {
+    // параметры устройства
     implicit val p = new AUParams()
+    // начало теста
     test(new ArithmeticUnit()) { au =>
-      au.io.valid.poke(true)
-      au.io.cmd.poke(CmdList.Addition)
-      au.io.op1.poke(1)
-      au.io.op2.poke(2)
-      au.clock.step()
+      au.io.valid.poke(true) // подали разрешающий сигнал
+      au.io.cmd.poke(CmdList.Addition) // подали код команды
+      au.io.op1.poke(1) // подали операнд
+      au.io.op2.poke(2) // подали операнд
+      au.clock.step() // шаг по времени
 
-      au.io.valid.poke(false)
-      au.io.out.expect(3)
-      au.io.ready.expect(true)
-      au.io.overflow.expect(false)
+      au.io.valid.poke(false) // убрали разрешающий сигнал
+      au.io.out.expect(3) // проверили результат
+      au.io.ready.expect(true) // проверили готовность
+      au.io.overflow.expect(false) // проверили переполнение
 
       au.clock.step()
     }
